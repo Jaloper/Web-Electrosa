@@ -1,2 +1,2 @@
 # Web Electrosa
-
+Electrosa es un proyecto fullstack de desarrollo web que representa una tienda online de electrodomésticos. Su objetivo es servir como ejemplo práctico de integración entre las capas de frontend y backend. Permite a los usuarios navegar por un catálogo de productos, administrar un carrito de compras y simular pedidos. Está desarrollado con tecnologías como HTML y CSS para el diseño responsive, JavaScript para la interacción del usuario y Java para la gestión del lado del servidor.
