@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Plazos de Entrega</title>
+        <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css"/>
+    </head>
+
+    <body>
+        <main layout:fragment="main-content">
+            <h1>Plazos de Entrega</h1>
+
+            <p>Total de pedidos: <span th:text="${stats.size()}"></span></p>
+            <p>PB: Península/Baleares, IB: Islas Canarias, IN: Internacional</p>
+
+            <div id="chart" style="width: 100%; height: 500px;"></div>
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                window.pedidoStats = /*[[${stats}]]*/ [];
+                /*]]>*/
+            </script>
+
+            <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+            <script th:src="@{/static/assets/js/practica8_delivery.js}"></script>
+        </main>
+    </body>
+</html>

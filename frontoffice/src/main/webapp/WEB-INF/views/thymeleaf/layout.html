@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      class="h-100" lang="es">
+
+    <head>
+        <title th:fragment="pageTitle(title)">Electrosa - PAW</title>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <link rel="apple-touch-icon" sizes="180x180" th:href="@{/static/assets/images/logo/apple-touch-icon.png}"/>
+        <link rel="icon" type="image/png" sizes="32x32" th:href="@{/static/assets/images/logo/favicon-32x32.png}"/>
+        <link rel="icon" type="image/png" sizes="16x16" th:href="@{/static/assets/images/logo/favicon-16x16.png}"/>
+
+        <link rel="stylesheet" th:href="@{/static/assets/css/style.css}"/>
+        <link rel="stylesheet" th:href="@{/static/assets/css/custom.css}"/>
+        <link rel="stylesheet" th:href="@{/static/assets/css/toast.css}"/>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
+    </head>
+
+    <body>
+
+        <body>
+            <div class="overlay" data-overlay></div>
+
+            <div class="notification-toast"
+                 data-toast id="notification-toast"
+                 th:data-url="@{/api/compras/ultimo-articulo}">
+                <button class="toast-close-btn" data-toast-close>
+                    <ion-icon name="close-outline"></ion-icon>
+                </button>
+                <div class="toast-banner">
+                    <img th:src="@{/static/assets/images/happybag.png}"
+                         alt="Compra reciente">
+                </div>
+                <div class="toast-detail">
+                    <p class="toast-message">Alguien acaba de comprar</p>
+                    <p class="toast-title" id="toast-title"></p>
+                    <p class="toast-meta">Hace un momento</p>
+                </div>
+            </div> <!--#notification-toast -->
+
+            <header>
+                <div class="header-top">
+                    <div class="container">
+
+                        <ul class="header-social-container">
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-facebook"></ion-icon>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-twitter"></ion-icon>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-instagram"></ion-icon>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-linkedin"></ion-icon>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                        <div id="news-banner" class="promo-banner" >
+                            <!-- El contenido se cargará dinámicamente via AJAX -->
+                        </div>
+
+                        <div class="header-top-actions">
+
+                            <select name="currency">
+                                <option value="eur">EUR &euro;</option>
+                                <option value="usd">USD &dollar;</option>
+                            </select>
+                            <a th:href="@{/lang/prefs}" class="btn btn-next">
+                                <button type="button" th:text="#{lang.change}">Cambiar idioma</button>
+                            </a>
+                            <form>
+                                <select name="lang" id="language-selector">
+                                    <option value="es" th:text="#{lang.es}" th:selected="${#strings.equals(#locale.toString(), 'es')}"></option>
+                                    <option value="en" th:text="#{lang.en}" th:selected="${#strings.equals(#locale.toString(), 'en')}"></option>
+                                    <option value="fr" th:text="#{lang.fr}" th:selected="${#strings.equals(#locale.toString(), 'fr')}"></option>
+                                    <option value="de" th:text="#{lang.de}" th:selected="${#strings.equals(#locale.toString(), 'de')}"></option>
+                                </select>
+                            </form>
+                            <a style="display:none;" href="/electrosa/i18n/lang">Cambiar preferencias</a>
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="header-main">
+
+                    <div class="container">
+
+                        <a href="/electrosa/" class="header-logo">
+                            <span>ELECTROSA</span>
+                        </a>
+
+                        <div class="header-search-container">
+
+                            <input type="search" name="search" class="search-field" 
+                                   placeholder="Buscar en toda la tienda"
+                                   >
+
+                                <button class="search-btn">
+                                    <ion-icon name="search-outline"></ion-icon>
+                                </button>
+
+                        </div>
+
+                        <div class="header-user-actions">
+                            <a href="/electrosa/cliente/cuenta" class="action-btn">
+                                <th:block th:if="${session.clienteAvatar == null or session.clienteAvatar.isDefault()}">
+                                    <ion-icon name="person-outline"></ion-icon>
+                                </th:block>
+                                <th:block th:unless="${session.clienteAvatar == null or session.clienteAvatar.isDefault()}">
+                                    <th:block th:if="${session.clienteAvatar.isRemoteURL()}">
+                                        <img th:src="${session.clienteAvatar.imageSource}" …/>
+                                    </th:block>
+                                    <th:block th:if="${not session.clienteAvatar.isRemoteURL()}">
+                                        <img th:src="@{/static/assets/avatar/{image}(image=${session.clienteAvatar.imageSource})}" …/>
+                                    </th:block>
+                                </th:block>
+                            </a>
+
+                            <a href="/electrosa/cliente/wishlist" class="action-btn" id="wishlist-link">
+                                <ion-icon name="heart-outline"></ion-icon>
+                                <span class="count" id="wishlist-count">0</span>
+                            </a>
+
+                            <a href="/electrosa/cliente/cesta" class="action-btn">
+                                <ion-icon name="bag-handle-outline"></ion-icon>
+
+                                <span class="count" th:text="${lineasCesta!=null ? lineasCesta.size(): 0}">0</span>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <nav class="desktop-navigation-menu">
+
+                    <div class="container">
+
+                        <ul class="desktop-menu-category-list">
+
+                            <li class="menu-category">
+                                <a href="/electrosa/" class="menu-title">Home</a>
+                            </li>
+
+
+                            <li class="menu-category">
+                                <a href="/electrosa/catalogo/?family=aspiradores" class="menu-title">Aspiradores</a>
+                            </li>
+
+                            <li class="menu-category">
+                                <a href="/electrosa/catalogo/?family=frigorificos" class="menu-title">Frigoríficos</a>
+                            </li>
+
+                            <li class="menu-category">
+                                <a href="/electrosa/catalogo/?family=lavadoras" class="menu-title">Lavadoras</a>
+
+                            </li>
+
+                            <li class="menu-category">
+                                <a href="/electrosa/catalogo/?family=cocinas" class="menu-title">Cocinas</a>
+                            </li>
+
+
+                            <li class="menu-category">
+                                <a href="/electrosa/blog/" class="menu-title">Blog</a>
+                            </li>
+
+                            <li class="menu-category">
+                                <a href="/electrosa/catalogo/ofertas" class="menu-title">Ofertas</a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </nav>
+
+                <div class="mobile-bottom-navigation">
+
+                    <button class="action-btn" data-mobile-menu-open-btn>
+                        <ion-icon name="menu-outline"></ion-icon>
+                    </button>
+
+                    <button class="action-btn">
+                        <ion-icon name="bag-handle-outline"></ion-icon>
+
+                        <span class="count">0</span>
+                    </button>
+
+                    <button class="action-btn">
+                        <ion-icon name="home-outline"></ion-icon>
+                    </button>
+
+                    <button class="action-btn">
+                        <ion-icon name="heart-outline"></ion-icon>
+
+                        <span class="count">0</span>
+                    </button>
+
+                    <button class="action-btn" data-mobile-menu-open-btn>
+                        <ion-icon name="grid-outline"></ion-icon>
+                    </button>
+
+                </div>
+
+                <nav class="mobile-navigation-menu  has-scrollbar" data-mobile-menu>
+
+                    <div class="menu-top">
+                        <h2 class="menu-title">Menu</h2>
+
+                        <button class="menu-close-btn" data-mobile-menu-close-btn>
+                            <ion-icon name="close-outline"></ion-icon>
+                        </button>
+                    </div>
+
+                    <ul class="mobile-menu-category-list">
+
+                        <li class="menu-category">
+                            <a href="#" class="menu-title">Aspiradores</a>
+                        </li>
+
+                        <li class="menu-category">
+                            <a href="#" class="menu-title">Frigoríficos</a>
+                        </li>
+                        <li class="menu-category">
+                            <a href="#" class="menu-title">Lavadoras</a>
+                        </li>
+                        <li class="menu-category">
+                            <a href="#" class="menu-title">Cocinas</a>
+                        </li>
+
+                        <li class="menu-category">
+                            <a href="#" class="menu-title">Blog</a>
+                        </li>
+
+                        <li class="menu-category">
+                            <a href="#" class="menu-title">Ofertas</a>
+                        </li>
+
+                    </ul>
+
+                    <div class="menu-bottom">
+
+                        <ul class="menu-category-list">
+
+                            <li class="menu-category">
+
+                                <button class="accordion-menu" data-accordion-btn>
+                                    <p class="menu-title">Language</p>
+
+                                    <ion-icon name="caret-back-outline" class="caret-back"></ion-icon>
+                                </button>
+
+                                <ul class="submenu-category-list" data-accordion>
+
+                                    <li class="submenu-category">
+                                        <a href="#" class="submenu-title">English</a>
+                                    </li>
+
+                                    <li class="submenu-category">
+                                        <a href="#" class="submenu-title">Espa&ntilde;ol</a>
+                                    </li>
+
+                                    <li class="submenu-category">
+                                        <a href="#" class="submenu-title">Fren&ccedil;h</a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+                            <li class="menu-category">
+                                <button class="accordion-menu" data-accordion-btn>
+                                    <p class="menu-title">Currency</p>
+                                    <ion-icon name="caret-back-outline" class="caret-back"></ion-icon>
+                                </button>
+
+                                <ul class="submenu-category-list" data-accordion>
+                                    <li class="submenu-category">
+                                        <a href="#" class="submenu-title">USD &dollar;</a>
+                                    </li>
+
+                                    <li class="submenu-category">
+                                        <a href="#" class="submenu-title">EUR &euro;</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+
+                        <ul class="menu-social-container">
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-facebook"></ion-icon>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-twitter"></ion-icon>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-instagram"></ion-icon>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" class="social-link">
+                                    <ion-icon name="logo-linkedin"></ion-icon>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </nav>
+
+            </header>
+
+
+            <main layout:fragment="main-content" class="main">
+
+            </main>
+            <!--
+              - FOOTER
+            -->
+
+            <footer>
+
+                <div class="footer-nav">
+
+                    <div class="container">
+
+                        <ul class="footer-nav-list">
+
+                            <li class="footer-nav-item">
+                                <h2 class="nav-title">Sobre Electrosa</h2>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="/electrosa/info/donde-estamos" class="footer-nav-link">Dónde estamos</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="/electrosa/about/team" class="footer-nav-link">Nuestro equipo</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Trabaja con nosotros</a>
+                            </li>
+
+                        </ul>
+
+                        <ul class="footer-nav-list">
+
+                            <li class="footer-nav-item">
+                                <h2 class="nav-title">Información</h2>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Seguir pedido</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="/electrosa/about/delivery" class="footer-nav-link">Plazos de entrega</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="/electrosa/marcas" class="footer-nav-link">Marcas</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Formas de pago</a>
+                            </li>
+
+
+                        </ul>
+
+                        <ul class="footer-nav-list">
+
+                            <li class="footer-nav-item">
+                                <h2 class="nav-title">Servicios</h2>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Tarjeta PAW</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Financiación de compras</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Devoluciones</a>
+                            </li>
+
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Mapa del sitio</a>
+                            </li>
+
+                        </ul>
+
+                        <ul class="footer-nav-list">
+
+                            <li class="footer-nav-item">
+                                <h2 class="nav-title">Extras</h2>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Blog</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Etiquetado energético</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Política de cookies</a>
+                            </li>
+
+                            <li class="footer-nav-item">
+                                <a href="#" class="footer-nav-link">Política de privacidad</a>
+                            </li>
+
+                        </ul>
+
+                        <ul class="footer-nav-list">
+
+                            <li class="footer-nav-item">
+                                <h2 class="nav-title">Contacto</h2>
+                            </li>
+
+                            <li class="footer-nav-item flex">
+                                <div class="icon-box">
+                                    <ion-icon name="location-outline"></ion-icon>
+                                </div>
+                                <address class="content">
+                                    <b>Facultad de Ciencia y Tecnología</b>
+                                    <br/>
+                                    Edificio CCT<br/>
+                                    C/ Madre de Dios, 53<br/>
+                                    26006 Logroño (La Rioja)
+                                </address>
+                            </li>
+
+                            <li class="footer-nav-item flex">
+                                <div class="icon-box">
+                                    <ion-icon name="call-outline"></ion-icon>
+                                </div>
+
+                                <a href="tel:+34 941001002" class="footer-nav-link">941 001 002</a>
+                            </li>
+
+                        </ul>
+
+                        <ul class="footer-nav-list">
+
+                            <li class="footer-nav-item">
+                                <h2 class="nav-title">Redes sociales</h2>
+                            </li>
+
+                            <li>
+                                <ul class="social-link">
+
+                                    <li class="footer-nav-item">
+                                        <a href="#" class="footer-nav-link">
+                                            <ion-icon name="logo-facebook"></ion-icon>
+                                        </a>
+                                    </li>
+
+                                    <li class="footer-nav-item">
+                                        <a href="#" class="footer-nav-link">
+                                            <ion-icon name="logo-twitter"></ion-icon>
+                                        </a>
+                                    </li>
+
+                                    <li class="footer-nav-item">
+                                        <a href="#" class="footer-nav-link">
+                                            <ion-icon name="logo-linkedin"></ion-icon>
+                                        </a>
+                                    </li>
+
+                                    <li class="footer-nav-item">
+                                        <a href="#" class="footer-nav-link">
+                                            <ion-icon name="logo-instagram"></ion-icon>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="footer-bottom">
+
+                    <div class="container">
+
+                        <p>
+
+                        </p>
+                        <p class="copyright">
+                            Programación de aplicaciones web - Universidad de La Rioja
+                            <br/>
+                            &#x2661;
+                            Crafted with love
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </footer>
+
+
+            <!--
+              - custom js link
+            -->
+            <script th:src="@{/static/assets/js/script.js}"></script>
+
+            <!--
+              - ionicon link
+            -->
+            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+            <script th:src="@{/static/assets/js/practica8_language.js}">
+
+            </script><script th:src="@{/static/assets/js/practica8_wishlist.js}"></script>
+            <script th:src="@{/static/assets/js/practica9_news.js}"></script>
+            <script th:src="@{/static/assets/js/practica9_toast.js}"></script>
+
+
+            <th:block th:fragment="body-bottom"></th:block>
+        </body>
+
+</html>

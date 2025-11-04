@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inicio</title>
+        <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <main layout:fragment="main-content">
+            <div th:replace="~{sidebar :: sidebar}"></div>
+
+            <div class="page-content">
+                <h1>Hola</h1>
+                <h3>BIENVENID@ A INSTALACIONES PETRASA</h3>
+                <div class="text-card">
+                    <p class="codigo" th:text="'Código del cliente: ' + ${cliente.codigo}"></p>
+                    <p class="usuario" th:text="'Usuario: ' + ${cliente.username}"></p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
+                    </p>
+                    <p>
+                        Curabitur pretium tincidunt lacus. Nulla gravida orci a odio...
+                    </p>
+                    <p>
+                        Fusce convallis, mauris imperdiet gravida bibendum...
+                    </p>
+                    <p>
+                        Proin nonummy, lacus eget pulvinar lacinia...
+                    </p>
+                    <h2>Cambiar imagen de perfil</h2>
+                    <form class="form-cultured" method="post" th:action="@{/cliente/avatar}" enctype="multipart/form-data">
+                        <div class="control">
+                            <label>Seleccione imagen:</label>
+                            <input type="file" name="file" />
+                        </div>
+
+                        <button class="btn-primary" type="submit">Subir imagen</button>
+                    </form>
+
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

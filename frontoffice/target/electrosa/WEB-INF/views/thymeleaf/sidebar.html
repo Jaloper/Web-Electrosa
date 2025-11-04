@@ -1,0 +1,9 @@
+<div th:fragment="sidebar" class="sidebar">
+    <ul>
+        <li><a th:href="@{/cliente/pedidos}">🛒 Compras realizadas</a></li>
+        <li><a th:href="@{/cliente/pedidos/anulados}">❌ Pedidos anulados</a></li>
+        <li><a th:href="@{/cliente/datos}">👤 Datos personales</a></li>
+        <li><a th:href="@{/cliente/favoritos}">⭐ Favoritos</a></li>
+        <li><a th:href="@{/auth/logout}">🚪 Cerrar sesión</a></li>
+    </ul>
+</div>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de clientes - Login</title>
+    <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+</head>
+<body class="login-body">
+    <div class="corner-title">Área de clientes</div>
+   <div class="container d-flex align-items-center">
+    <div class="login-card">
+        <div class="login-left">
+            <img th:src="@{/static/assets/images/20945760.jpg}" 
+                         alt="Imagen ilustrativa" class="login-image">
+        </div>
+        <div class="login-right">
+            <div class="error-message" th:if="${error}">
+                <span th:text="${error}">Credenciales incorrectas</span>
+            </div>
+            <div th:if="${confirmacion}" class="sucess-message" th:text="${confirmacion}"></div>
+
+            <form th:action="@{/auth/login}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">USUARIO:</label>
+                    <input type="text" class="form-control" id="username"
+                           name="username" th:value="${usernameValue}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">CONTRASEÑA:</label>
+                    <input type="password" class="form-control" id="password"
+                           name="password" required>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    INICIAR SESIÓN
+                </button>
+            </form>
+            <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+    </div>
+
+    <div class="create-account-box">
+        ¿Aún no tienes cuenta?<br>
+        <a href="/electrosa/auth/register">👤 Crear cuenta</a>
+    </div>
+</div>
+
+</body>
+</html>

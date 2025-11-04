@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>[(${articulo.nombre})]</title>
+        <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+        <link th:href="@{/static/assets/css/practica9.css}" rel="stylesheet" />
+    </head>
+    <body>
+        <main layout:fragment="main-content">
+            <div class="ficha-container">
+                <div class="ficha-articulo">
+                    <div class="ficha-imagen">
+                        <img th:src="@{'/static/assets/images/store/' + ${articulo.foto}}" 
+                             alt="Imagen del producto" class="img-fluid">
+                    </div>
+                    <div class="ficha-info">
+                        <h3 th:text="${articulo.nombre}"></h3>
+                        <p><span th:text="${articulo.descripcion}"></span></p>
+                        <p class="precio-container">
+                            <span class="precio" th:text="${#numbers.formatDecimal(articulo.pvp, 1, 1)} + ' €'"></span>
+                        </p>
+                        <form th:action="@{'/cliente/cesta/add/' + ${articulo.codigo}}" method="get">
+                            <button type="submit" class="btn btn-primary">
+                                Añadir al carrito
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="oferta-section">
+                    <a href="#" id="descubrir-oferta" class="btn btn-primary">Descubrir oferta</a>
+                    <div id="oferta-container"></div>
+                </div>
+
+                <th:block th:fragment="body-bottom">
+                    <script th:src="@{/static/assets/js/practica9_oferta.js}"></script>
+                </th:block>
+            </div>
+        </main>
+    </body>
+</html>

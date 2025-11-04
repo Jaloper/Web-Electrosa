@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${'Pedido '+pedido.codigo}"></title>
+        <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <main layout:fragment="main-content">
+            <div th:replace="~{sidebar :: sidebar}"></div>
+
+            <div class="page-content">
+                <div class="pedidos-container">
+                    <h1 th:text="${'Pedido '+pedido.codigo}"></h1>
+
+                    <span class="fecha-label">Fecha:</span>
+                    <span class="fecha-valor" th:text="${#dates.format(pedido.fechacierre, 'dd/MM/yyyy')}">15/03/2023</span>
+
+                    <div class="info-container">
+                        <div class="pedido-detail direccion">
+                            <div class="detail-label">Dirección de entrega:</div>
+                            <div th:text="${pedido.direccion.calle}"></div>
+                            <div th:text="${pedido.direccion.ciudad}"></div>
+                            <div th:text="${pedido.direccion.cp+' ('+pedido.direccion.provincia+')'}"></div>
+                        </div>
+
+                        <div class="estado-pedido">
+                            <div class="detail-label">Estado:</div>
+                            <span th:text="${pedido.isEnCurso()} ? 'PENDIENTE' : 'ENTREGADO'">PENDIENTE</span>
+                            <form th:action="@{'anular/' + ${pedido.codigo}}" method="get" th:if="${pedido.isEnCurso()}">
+                                <button type="submit" class="btn-anular">Anular Pedido</button>
+                            </form>
+                        </div>
+                    </div>
+                    <table class="tabla-lineas">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Fecha entrega</th>
+                                <th>Fecha recepción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="linea : ${lineaPedido}">
+                                <td th:text="${linea.codigo}"></td>
+                                <td th:text="${linea.articulo.codigo}"></td>
+                                <td th:text="${linea.cantidad}"></td>
+                                <td th:text="${#numbers.formatDecimal(linea.precioBase, 1, 2) + ' €'}"></td>
+                                <td th:text="${linea.fechaEntregaPrevista != null} ? ${#dates.format(linea.fechaEntregaPrevista, 'dd/MM/yyyy')} : ''"></td>
+                                <td th:text="${linea.fechaRecepcion != null} ? ${#dates.format(linea.fechaRecepcion, 'dd/MM/yyyy')} : ''"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="total-importe">
+                        <strong>Importe Total:</strong>
+                        <span th:text="${#numbers.formatDecimal(#aggregates.sum(lineaPedido.![precioBase * cantidad]), 1, 2) + ' €'}">0,00 €</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

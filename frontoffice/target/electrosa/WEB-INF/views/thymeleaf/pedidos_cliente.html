@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mis Pedidos</title>
+        <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <main layout:fragment="main-content">
+            <div th:replace="~{sidebar :: sidebar}"></div>
+
+            <div class="page-content">
+                <div class="pedidos-container">
+                    <h1 th:text="${pedidosAnulados == null} ? 'Compras realizadas' : 'Pedidos anulados'">
+                        Compras realizadas
+                    </h1>
+                    <div class="pedidos-grid">
+                        <div class="pedido-card" th:each="pedido : ${pedidos}">
+                            <a th:href="@{'/cliente/pedidos/' + ${pedido.codigo}}">
+                                <div class="pedido-header">
+                                    <span class="pedido-codigo" th:text="${pedido.codigo}">PED-12345</span>
+                                    <span th:classappend="${pedido.isEnCurso()} ? 'pedido-estado pendiente' : 'pedido-estado entregado'"
+                                          th:text="${pedido.isEnCurso()} ? 'PENDIENTE' : 'ENTREGADO'">PENDIENTE</span>
+                                </div>
+
+                                <div class="pedido-detail">
+                                    Fecha: [[ ${#dates.format(pedido.fechacierre, 'dd/MM/yyyy HH:mm')} ]]
+                                </div>
+
+                                <div class="pedido-detail">
+                                    <div th:text="${'Dirección de entrega: ' +pedido.direccion.calle + ', ' + pedido.direccion.ciudad}">
+                                    </div>
+                                    <div th:text="${pedido.direccion.cp+' ('+pedido.direccion.provincia+')'}">
+                                    </div>
+                                </div>
+                                <div class="pedido-detail">
+                                    <div th:text="${'Importe: '+pedido.importe} +€"></div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="pedido-card anulado" th:each="pedido : ${pedidosAnulados}">
+                            <a th:href="@{'/cliente/pedidos/anulados/' + ${pedido.codigo}}">
+                                <div class="pedido-header">
+                                    <span class="pedido-codigo" th:text="${pedido.codigo}"></span>
+                                </div>
+                                    <span class="pedido-estado anulado">ANULADO</span>
+                                <div class="pedido-detail">
+                                    Fecha: [[ ${#dates.format(pedido.fechacierre, 'dd/MM/yyyy')} ]]
+                                </div>
+                                <div class="pedido-detail">
+                                    Fecha anulación: [[ ${#dates.format(pedido.fechaanulacion, 'dd/MM/yyyy')} ]]
+                                </div>
+
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

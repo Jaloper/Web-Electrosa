@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <title>Registro completado</title>
+     <link th:href="@{/static/assets/css/practica7.css}" rel="stylesheet" />
+</head>
+<body>
+    <main layout:fragment="main-content">
+        <h1>Área de clientes</h1>
+        <div th:if="${clienteRegistrado != null}">
+            <p th:text="'Gracias por registrarse en Electrosa, ' + ${clienteRegistrado.nombre} + '. En unos momentos recibirá un correo electrónico de confirmación del registro como nuevo cliente.'">
+                Autenticación exitosa
+            </p>
+        </div>
+        <div th:if="${clienteRegistrado == null}">
+            <p>Aquí ya no hay nada que ver :)
+            El usuario ya fue registrado</p>
+        </div>
+    </main>
+</body>
+</html>

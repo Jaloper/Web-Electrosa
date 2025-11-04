@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+        <link th:href="@{/static/assets/css/practica7.css}" rel="stylesheet" />
+        <link th:href="@{/static/assets/css/practica8.css}" rel="stylesheet" />
+    <body>
+        <main layout:fragment="main-content">
+            <div class="catalogo-container">
+                <h1 th:text="#{catalog.title}">Catálogo de productos</h1>
+                <form method="get" action="#" class="filtros-form">
+                    <div class="filtros-wrapper">
+                        <h2 class="filtros-titulo">Filtros de búsqueda</h2>
+                        <div class="filtros-container">
+                            <label for="fabricante">Fabricante:</label>
+                            <select id="fabricante" name="fabricante">
+                                <option value="">-- Cualquiera --</option>
+                                <option th:each="fab : ${fabricantes}"
+                                        th:value="${fab.getNombre()}"
+                                        th:text="${fab.getNombre()}"
+                                        th:selected="${fab.getNombre() == fabricanteSeleccionado}"></option>
+                            </select>
+
+                            <label for="tipo">Tipo:</label>
+                            <select id="tipo" name="tipo">
+                                <option value="">-- Cualquiera --</option>
+                                <option th:each="t : ${tiposArticulo}"
+                                        th:value="${t.getNombre()}"
+                                        th:text="${t.getNombre()}"
+                                        th:selected="${t.getNombre() == tipoSeleccionado}"></option>
+                            </select>
+
+                            <button type="submit" class="btn-filtrar">APLICAR FILTROS</button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div th:if="${totalPages > 1}" class="paginacion-superior">
+                    <div class="paginacion-contenedor">
+                        <a th:href="@{/catalogo(page=1, fabricante=${fabricanteSeleccionado}, tipo=${tipoSeleccionado})}" 
+                           class="paginacion-enlace"
+                           th:text="#{paginator.first}">Primero</a>
+
+                        <a th:if="${currentPage > 1}"
+                           th:href="@{/catalogo(page=${currentPage - 1}, fabricante=${fabricanteSeleccionado}, tipo=${tipoSeleccionado})}" 
+                           class="paginacion-enlace"
+                           th:text="#{paginator.previous}">Anterior</a>
+
+                        <span class="paginacion-texto">
+                            [[ #{paginator.page.showing(${currentPage}, ${totalPages})} ]]
+                        </span>
+
+                        <a th:if="${currentPage < totalPages}"
+                           th:href="@{/catalogo(page=${currentPage + 1}, fabricante=${fabricanteSeleccionado}, tipo=${tipoSeleccionado})}" 
+                           class="paginacion-enlace"
+                           th:text="#{paginator.next}">Siguiente</a>
+
+                        <a th:href="@{/catalogo(page=${totalPages}, fabricante=${fabricanteSeleccionado}, tipo=${tipoSeleccionado})}" 
+                           class="paginacion-enlace"
+                           th:text="#{paginator.last}">Último</a>
+                    </div>
+                </div>
+
+                <div class="arts-container">
+                    <span class="arts-pag" th:text="#{paginator.page.size} + ': ' + ${articulos.size()}">Artículos por página</span>
+                    <span class="arts-totales" th:text="'(' + #{paginator.page.total(${totalArts})} + ')'">(total)</span>
+                </div>
+
+                <div th:if="${articulos == null || articulos.empty}" class="alert alert-danger">
+                    [[ #{catalog.noelements} ]]
+                </div>
+
+                <div class="articulos-grid">
+                    <div th:each="articulo : ${articulos}" class="articulo-card">
+                        <button class="wishlist-btn" th:data-article-code="${articulo.codigo}">
+                            <ion-icon name="heart-outline"></ion-icon>
+                        </button>
+                        <a th:href="@{'/catalogo/' + ${articulo.codigo}}" class="card-link">
+                            <div class="card-img-container">
+                                <img th:src="@{'/static/assets/images/store/' + ${articulo.foto}}" 
+                                     th:alt="#{catalog.image.alt}" class="card-img">
+                            </div>
+                            <div class="card-info">
+                                <h3 th:text="${articulo.codigo}"></h3>
+                                <p class="codigo" th:text="${#strings.toUpperCase(articulo.nombre)}"></p>
+                                <p class="precio" th:text="${#numbers.formatDecimal(articulo.pvp, 1, 1)} + ' ' + #{currency.euro.title}"></p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

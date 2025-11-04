@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cesta</title>
+        <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+        <link th:href="@{/static/assets/css/practica9.css}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <main layout:fragment="main-content">
+            <div th:replace="~{sidebar :: sidebar}"></div>
+
+            <div class="page-content">
+                <div class="pedidos-container">
+                    <h1>Cesta</h1>
+                    <div class="cesta-actions">
+                        <a th:href="@{/catalogo}" class="btn btn-primary">
+                            Seguir comprando
+                        </a>
+                    </div>
+                    <div class="pedidos-grid">
+                        <div class="cesta-item-card" th:each="linea : ${lineasCesta}">
+                            <div class="producto-container">
+                                <div class="articulo-imagen">
+                                    <img th:src="@{'/static/assets/images/store/' + ${linea.articulo.foto}}" 
+                                         alt="Imagen del producto" class="img-articulo">
+                                </div>
+                                <div class="producto-info">
+                                    <div class="item-header">
+                                        <span class="item-nombre" th:text="${linea.articulo.nombre}"></span>
+                                    </div>
+                                    <div class="item-detail">
+                                        <input type="number" 
+                                               class="quantity-input"
+                                               th:attr="data-line-id=${linea.articulo.codigo}"
+                                               th:value="${linea.cantidad}"
+                                               min="1"
+                                               step="1">
+                                        <span th:text="' x ' + ${linea.articulo.codigo}"></span>
+                                    </div>
+                                    <div class="item-detail">
+                                        <span th:text="'(Precio unidad: ' + ${#numbers.formatDecimal(linea.precio, 1, 1)} + '€)'"></span>
+                                    </div>
+                                </div>
+                                <div class="precio-total">
+                                    <span th:text="${#numbers.formatDecimal(linea.precio * linea.cantidad, 1, 1)} + '€'"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="total-cesta">
+                        <span>Total: </span>
+                        <span th:text="${#numbers.formatDecimal(preciototal, 1, 1)} + '€'"></span>
+                    </div>
+                    <a th:href="@{/clientes/cesta/realizar-pedido}" class="btn btn-primary realizar-pedido">
+                        REALIZAR PEDIDO
+                    </a>
+                </div>
+            </div>
+            <script th:inline="javascript">
+/*<![CDATA[*/
+  // Esto se convertirá en "/electrosa/cliente/cesta/update"
+  const UPDATE_CART_URL = /*[[@{/cliente/cesta/update}]]*/ '/cliente/cesta/update';
+/*]]>*/
+</script>
+<script th:src="@{/static/assets/js/practica9_cart.js}"></script>
+        </main>
+            
+    </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${'Pedido '+pedido.codigo}"></title>
+        <link th:href="@{/static/assets/css/practica6.css}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <main layout:fragment="main-content">
+            <div th:replace="~{sidebar :: sidebar}"></div>
+
+            <div class="page-content">
+                <div class="pedidos-container">
+                    <h1 th:text="${'Pedido '+pedido.codigo}"></h1>
+                    <div>
+                        <span class="fecha-label">Fecha cierre: </span>
+                        <span class="fecha-valor" th:text="${#dates.format(pedido.fechacierre, 'dd/MM/yyyy')}">15/03/2023</span>
+                    </div>
+                    <div>
+                        <span class="fecha-label">Fecha anulación: </span>
+                        <span class="fecha-valor" th:text="${#dates.format(pedido.fechaanulacion, 'dd/MM/yyyy')}">15/03/2023</span>
+                    </div>
+                    <div class="pedido-estado anulado">
+                        <span class="detail-label">Estado:</span>
+                        <span>ANULADO</span>
+                    </div>
+                    <table class="tabla-lineas">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="linea : ${lineaAnulada}">
+                                <td th:text="${linea.codigo}"></td>
+                                <td th:text="${linea.articulo.codigo}"></td>
+                                <td th:text="${linea.cantidad}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

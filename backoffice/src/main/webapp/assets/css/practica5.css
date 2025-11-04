@@ -1,0 +1,37 @@
+.card-layout__item input[type="text"],
+.card-layout__item input[type="password"] {
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+}
+.card-layout {
+    display: flex;
+    justify-content: center;
+}
+
+.card-layout__item {
+    width: 40%;
+}
+
+.mensaje-error{
+    color: maroon;
+    font-weight: bold;
+    background-color: #f8d7da;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 2px;
+}
+
+.card-layout__item form div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.card-layout__item form label {
+    text-align: left;
+}
+
+.card-layout__item form input {
+    width: 100%;
+}

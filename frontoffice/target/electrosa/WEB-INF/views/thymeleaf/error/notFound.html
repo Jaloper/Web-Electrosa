@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link th:href="@{/static/assets/css/practica7.css}" rel="stylesheet" />
+    </head>
+    <main layout:fragment="main-content">
+        <h1 class="title">Ups, algo ha ido mal</h1>
+        <div class="exception-message">
+            [[ ${exception.message} ]]
+        </div>
+        <div class="line">
+            <div class="exit-link">
+                <ion-icon name="close-outline"></ion-icon>
+                <a class="exit-link-anchor" th:href="@{/}">Salir de aquí</a>
+            </div>
+        </div>
+    </main>
+    
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+        <main layout:fragment="main-content">
+
+            <div>
+
+                <div class="container">
+
+                    <div class="testimonials-box mt40">
+
+
+                        <div class="testimonial mt60">
+
+
+                            <div class="testimonial-card">
+
+
+                               <p class="testimonial-title">Idioma actual: 
+                                   <span th:text="${#locale.getDisplayLanguage(#locale)}"></span>
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!--
+                          - CTA
+                        -->
+
+                        <div class="cta-container">
+                            <h1>Preferencias de idioma</h1>
+                            <h2>Cambiar preferencias</h2>
+                            <p>
+                                idioma:
+                            </p>
+                            <form>
+                            <select name="lang" id="language-selector">
+                                <option value="es" selected="selected">Español</option>
+                                <option value="en">Inglés</option>
+                                <option value="fr">Francés</option>
+                                <option value="de">Alemán</option>
+                            </select>
+                                 <button type="submit" class="btn btn-primary">
+                                    Aplicar cambios
+                                </button>
+                        </form>
+
+                        </div>
+
+                        <!--
+                          - SERVICE
+                        -->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </main>

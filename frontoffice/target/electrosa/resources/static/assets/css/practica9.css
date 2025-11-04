@@ -1,0 +1,31 @@
+.oferta-section{
+   position: absolute;
+   right:250px;
+   bottom: 250px;
+}
+
+#descubrir-oferta{
+display: none;
+}
+
+.quantity-input {
+    width: 70px;
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.quantity-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.quantity-input.error {
+    border-color: #f44336;
+    animation: shake 0.5s;
+}
+
+

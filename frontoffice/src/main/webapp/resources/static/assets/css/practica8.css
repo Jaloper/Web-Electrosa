@@ -1,0 +1,45 @@
+input:required:invalid {
+    border: 2px solid #a94442; /* red */
+    color: #C02C11;
+}
+input:required:valid {
+    border: 2px solid #5C7E6F; /* green */
+}
+
+.form-cultured ion-icon {
+    display: inline-block;
+}
+.articulo-card {
+  position: relative;
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+}
+
+.wishlist-btn ion-icon {
+  font-size: 24px;
+  color: #888;
+  transition: color 0.3s ease;
+}
+
+.wishlist-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.wishlist-btn:hover ion-icon {
+  color: #e60023;
+}
+
+.wishlist-btn.active ion-icon {
+  color: #e60023;
+}
